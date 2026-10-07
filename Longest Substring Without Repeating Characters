@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        // Array to store the last seen index of each ASCII character, initialized to -1
+        int lastIdx[256];
+        fill(begin(lastIdx), end(lastIdx), -1);
+        
+        int maxLen = 0;
+        int left = 0; // Left boundary of the sliding window
+        
+        for (int right = 0; right < s.length(); ++right) {
+            // If character is already in the window, move left pointer past its last seen position
+            if (lastIdx[(unsigned char)s[right]] >= left) {
+                left = lastIdx[(unsigned char)s[right]] + 1;
+            }
+            
+            // Update the last seen position of the character
+            lastIdx[(unsigned char)s[right]] = right;
+            
+            // Calculate the maximum length found so far
+            maxLen = max(maxLen, right - left + 1);
+        }
+        
+        return maxLen;
+    }
+};
