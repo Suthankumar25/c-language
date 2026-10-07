@@ -1,0 +1,38 @@
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        if (s.empty()) return "";
+        
+        int start = 0;
+        int maxLen = 0;
+        
+        // Helper lambda function to expand around a center
+        auto expandAroundCenter = [&](int left, int right) {
+            while (left >= 0 && right < s.length() && s[left] == s[right]) {
+                left--;
+                right++;
+            }
+            // Length of the valid palindrome found
+            return right - left - 1;
+        };
+        
+        for (int i = 0; i < s.length(); ++i) {
+            // Case 1: Odd length palindromes (e.g., "aba", center is 'b')
+            int len1 = expandAroundCenter(i, i);
+            
+            // Case 2: Even length palindromes (e.g., "abba", center is between 'b' and 'b')
+            int len2 = expandAroundCenter(i, i + 1);
+            
+            int currentLen = max(len1, len2);
+            
+            // Update the boundaries of the longest palindrome found so far
+            if (currentLen > maxLen) {
+                maxLen = currentLen;
+                // Calculate starting index using the center i
+                start = i - (currentLen - 1) / 2;
+            }
+        }
+        
+        return s.substr(start, maxLen);
+    }
+};
