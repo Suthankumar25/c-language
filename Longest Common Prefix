@@ -1,0 +1,25 @@
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        // Base case: if the input vector is empty, return empty string
+        if (strs.empty()) return "";
+        
+        // Take the first string as the benchmark reference
+        string benchmark = strs[0];
+        
+        // Iterate through each character of the first string
+        for (int i = 0; i < benchmark.length(); ++i) {
+            char c = benchmark[i];
+            
+            // Compare character 'c' with the same position in all other strings
+            for (int j = 1; j < strs.size(); ++j) {
+                // If index exceeds current string's length or characters mismatch
+                if (i == strs[j].length() || strs[j][i] != c) {
+                    return benchmark.substr(0, i);
+                }
+            }
+        }
+        
+        return benchmark;
+    }
+};
