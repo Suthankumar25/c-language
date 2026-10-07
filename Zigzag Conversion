@@ -1,0 +1,35 @@
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        // Edge cases: if there is only 1 row or string length is less than rows, pattern remains unchanged
+        if (numRows <= 1 || s.length() <= numRows) {
+            return s;
+        }
+        
+        // Create an array of strings to store characters for each row
+        vector<string> rows(min(numRows, (int)s.length()));
+        int currRow = 0;
+        bool goingDown = false;
+        
+        // Traverse the input string
+        for (char c : s) {
+            rows[currRow] += c;
+            
+            // Flip direction when hitting the top (row 0) or bottom (numRows - 1)
+            if (currRow == 0 || currRow == numRows - 1) {
+                goingDown = !goingDown;
+            }
+            
+            // Move up or down based on current direction
+            currRow += goingDown ? 1 : -1;
+        }
+        
+        // Combine all rows into a final single string
+        string result = "";
+        for (const string& row : rows) {
+            result += row;
+        }
+        
+        return result;
+    }
+};
