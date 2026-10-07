@@ -1,0 +1,24 @@
+class Solution {
+public:
+    bool isPalindrome(int x) {
+        // Edge cases: 
+        // 1. Negative numbers are not palindromes (e.g., -121 reads as 121-)
+        // 2. Numbers ending in 0 are not palindromes unless the number itself is 0
+        if (x < 0 || (x % 10 == 0 && x != 0)) {
+            return false;
+        }
+        
+        int revertedNumber = 0;
+        
+        // Keep reversing digits until the reverted number becomes greater than or equal to the remaining part
+        while (x > revertedNumber) {
+            revertedNumber = revertedNumber * 10 + x % 10;
+            x /= 10;
+        }
+        
+        // When the length is an odd number, we can get rid of the middle digit by revertedNumber/10
+        // For example, for 121: at the end of the loop x = 1, revertedNumber = 12
+        // Since the middle digit doesn't matter in a palindrome, we can eliminate it by doing revertedNumber/10.
+        return x == revertedNumber || x == revertedNumber / 10;
+    }
+};
