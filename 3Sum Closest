@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+
+// Comparison function for qsort
+int compare(const void* a, const void* b) {
+    return (*(int*)a - *(int*)b);
+}
+
+int threeSumClosest(int* nums, int numsSize, int target) {
+    // Sort the array to use the two-pointer technique
+    qsort(nums, numsSize, sizeof(int), compare);
+    
+    // Initialize the closest sum with the first possible triplet sum
+    long long closest_sum = (long long)nums[0] + nums[1] + nums[2];
+    
+    for (int i = 0; i < numsSize - 2; i++) {
+        int left = i + 1;
+        int right = numsSize - 1;
+        
+        while (left < right) {
+            long long current_sum = (long long)nums[i] + nums[left] + nums[right];
+            
+            // If we find an exact match to the target, return it immediately
+            if (current_sum == target) {
+                return current_sum;
+            }
+            
+            // If the current sum is closer to the target than the previous closest_sum
+            if (abs(current_sum - target) < abs(closest_sum - target)) {
+                closest_sum = current_sum;
+            }
+            
+            // Move pointers based on how the current sum compares to the target
+            if (current_sum < target) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+    }
+    
+    return (int)closest_sum;
+}
